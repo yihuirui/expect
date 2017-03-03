@@ -1,0 +1,20 @@
+#!/usr/bin/expect
+###################################
+#expect + argv +ip +command		  #
+###################################
+#don't need to enter password and command
+if { $argc != 2 } {
+	puts "usage: expect $argv0 ip command"
+	exit
+	}
+#define var	
+set ip [lindex $argv 0]
+set cmd [lindex $argv 1]
+set password "password"
+#
+spawn ssh root@$ip $cmd
+expect {
+	"yes/no"	{send "yes\r"; exp_continue}
+	"*password" {send "$password\r"}
+	}
+expect eof
